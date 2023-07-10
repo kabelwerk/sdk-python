@@ -1,0 +1,44 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "kabelwerk"
+description = "The Kabelwerk SDK for Python."
+
+readme = "README.rst"
+
+authors = [
+    {name = "Kabelwerk", email = "devs@kabelwerk.io"},
+]
+
+license = {file = "LICENSE"}
+
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Communications :: Chat",
+    "Topic :: Internet :: WWW/HTTP",
+]
+keywords = ["kabelwerk"]
+
+dynamic = ["version"]
+
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "flit",
+    "pip-tools",
+]
+
+[project.urls]
+Home = "https://kabelwerk.io"
+Changelog = "https://github.com/kabelwerk/sdk-python/blob/master/CHANGELOG.rst"
+Source = "https://github.com/kabelwerk/sdk-python"
+Tracker = "https://github.com/kabelwerk/sdk-python/issues"
+
+[tool.pip-tools]
+all_extras = true

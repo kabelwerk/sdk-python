@@ -1,0 +1,14 @@
+# virtual env
+/venv
+
+# packaging
+/.eggs
+/build
+/dist
+/kabelwerk.egg-info
+
+# compiled code
+*.pyc
+
+# editors
+*.swp
