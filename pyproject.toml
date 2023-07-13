@@ -26,12 +26,15 @@ keywords = ["kabelwerk"]
 
 dynamic = ["version"]
 
-dependencies = []
+dependencies = [
+    "requests >= 2.31",
+]
 
 [project.optional-dependencies]
 dev = [
     "flit",
     "pip-tools",
+    "responses",
 ]
 
 [project.urls]

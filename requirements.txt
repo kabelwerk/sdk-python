@@ -26,12 +26,23 @@ pip-tools==6.14.0
     # via kabelwerk (pyproject.toml)
 pyproject-hooks==1.0.0
     # via build
+pyyaml==6.0
+    # via responses
 requests==2.31.0
-    # via flit
+    # via
+    #   flit
+    #   kabelwerk (pyproject.toml)
+    #   responses
+responses==0.23.1
+    # via kabelwerk (pyproject.toml)
 tomli-w==1.0.0
     # via flit
+types-pyyaml==6.0.12.10
+    # via responses
 urllib3==2.0.3
-    # via requests
+    # via
+    #   requests
+    #   responses
 wheel==0.40.0
     # via pip-tools
 
