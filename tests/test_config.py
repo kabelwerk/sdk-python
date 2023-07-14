@@ -35,3 +35,14 @@ def test_good_urls():
 
     config.KABELWERK_URL = 'wss://kabelwerk.io/socket/hub'
     assert config.get_api_url() == 'https://kabelwerk.io/api'
+
+
+def test_get_api_token():
+    """
+    The get_api_token function should raise if KABELWERK_API_TOKEN is not set.
+    """
+    with pytest.raises(ValueError):
+        config.get_api_token()
+
+    config.KABELWERK_API_TOKEN = 'TOKEN'
+    assert config.get_api_token() == 'TOKEN'
