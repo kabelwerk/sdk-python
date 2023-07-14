@@ -34,6 +34,7 @@ dependencies = [
 dev = [
     "flit",
     "pip-tools",
+    "pytest",
     "responses",
 ]
 
