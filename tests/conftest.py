@@ -1,3 +1,5 @@
+import logging
+
 import pytest
 import responses
 from responses.matchers import header_matcher
@@ -42,3 +44,9 @@ def mock_response(api_url, api_token, mock_api):
         )
 
     return function
+
+
+@pytest.fixture
+def logs(caplog):
+    caplog.set_level(logging.INFO)
+    return caplog

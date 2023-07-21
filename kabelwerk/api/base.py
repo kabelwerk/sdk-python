@@ -4,15 +4,14 @@ import requests
 
 from kabelwerk.config import get_api_token, get_api_url
 from kabelwerk.exceptions import (
-    AuthenticationError, ConnectionError, ServerError,
-    ValidationError,
+    AuthenticationError, ConnectionError, ServerError, ValidationError,
 )
 
 
 logger = logging.getLogger('kabelwerk.api')
 
 
-def make_api_call(method, url_path, params):
+def make_api_call(method, url_path, params, timeout=5):
     """
     Send a request to the Kabelwerk API.
 
@@ -44,13 +43,11 @@ def make_api_call(method, url_path, params):
                 'Kabelwerk-Token': get_api_token(),
             },
             json=params,
-            timeout=5,
+            timeout=timeout,
         )
 
     except requests.RequestException as error:
-        logger.error((
-            f'{log} → {error}'
-        ))
+        logger.error(f'{log} → {error!s}', exc_info=error)
 
         raise ConnectionError from error
 
@@ -58,7 +55,7 @@ def make_api_call(method, url_path, params):
         payload = response.json()
 
         logger.info((
-            f'{log} → {response.status_code} {response.reason} {payload}'
+            f'{log} → {response.status_code} {response.reason} {payload!r}'
         ))
 
         return payload
@@ -67,21 +64,17 @@ def make_api_call(method, url_path, params):
         payload = response.json()
 
         logger.warning((
-            f'{log} → {response.status_code} {response.reason} {payload}'
+            f'{log} → {response.status_code} {response.reason} {payload!r}'
         ))
 
         raise ValidationError
 
     elif response.status_code == 401:
-        logger.error((
-            f'{log} → {response.status_code} {response.reason}'
-        ))
+        logger.error(f'{log} → {response.status_code} {response.reason}')
 
         raise AuthenticationError
 
     else:
-        logger.error((
-            f'{log} → {response.status_code} {response.reason}'
-        ))
+        logger.error(f'{log} → {response.status_code} {response.reason}')
 
         raise ServerError
