@@ -1,6 +1,7 @@
 import logging
 
 import pytest
+import requests
 from responses.matchers import json_params_matcher
 
 from kabelwerk.api.base import make_api_call
@@ -79,8 +80,15 @@ def test_make_api_call_400(mock_api, mock_response, logs):
     """
     mock_response('POST', '/test', 400, {'errors': {'field': ['message']}})
 
-    with pytest.raises(ValidationError):
+    with pytest.raises(ValidationError) as exc_info:
         make_api_call('POST', '/test', TEST_PARAMS)
+
+    error = exc_info.value
+    assert isinstance(error.request, requests.PreparedRequest)
+    assert isinstance(error.response, requests.Response)
+    assert error.response.status_code == 400
+    assert error.field == 'field'
+    assert error.error_message == 'message'
 
     assert len(mock_api.calls) == 1
     assert json_params_matcher(TEST_PARAMS)(mock_api.calls[0].request)
@@ -100,8 +108,13 @@ def test_make_api_call_401(mock_api, mock_response, logs):
     """
     mock_response('POST', '/test', 401, {})
 
-    with pytest.raises(AuthenticationError):
+    with pytest.raises(AuthenticationError) as exc_info:
         make_api_call('POST', '/test', TEST_PARAMS)
+
+    error = exc_info.value
+    assert isinstance(error.request, requests.PreparedRequest)
+    assert isinstance(error.response, requests.Response)
+    assert error.response.status_code == 401
 
     assert len(mock_api.calls) == 1
     assert json_params_matcher(TEST_PARAMS)(mock_api.calls[0].request)
@@ -121,8 +134,13 @@ def test_make_api_call_500(mock_api, mock_response, logs):
     """
     mock_response('POST', '/test', 500, {})
 
-    with pytest.raises(ServerError):
+    with pytest.raises(ServerError) as exc_info:
         make_api_call('POST', '/test', TEST_PARAMS)
+
+    error = exc_info.value
+    assert isinstance(error.request, requests.PreparedRequest)
+    assert isinstance(error.response, requests.Response)
+    assert error.response.status_code == 500
 
     assert len(mock_api.calls) == 1
     assert json_params_matcher(TEST_PARAMS)(mock_api.calls[0].request)
@@ -140,8 +158,12 @@ def test_make_api_call_connection_error(api_token, mock_api, logs):
     The make_api_call function should raise if there is an issue connecting to
     the backend.
     """
-    with pytest.raises(ConnectionError):
+    with pytest.raises(ConnectionError) as exc_info:
         make_api_call('POST', '/test', TEST_PARAMS)
+
+    error = exc_info.value
+    assert isinstance(error.request, requests.PreparedRequest)
+    assert isinstance(error.cause, requests.RequestException)
 
     assert len(mock_api.calls) == 1
     assert json_params_matcher(TEST_PARAMS)(mock_api.calls[0].request)

@@ -54,7 +54,7 @@ def make_api_call(method, url_path, params=None, timeout=2):
     except requests.RequestException as error:
         logger.error(f'{log} → {error!s}', exc_info=error)
 
-        raise ConnectionError from error
+        raise ConnectionError(error)
 
     if response.status_code in [200, 201]:
         payload = response.json()
@@ -77,14 +77,20 @@ def make_api_call(method, url_path, params=None, timeout=2):
             f'{log} → {response.status_code} {response.reason} {payload!r}'
         ))
 
-        raise ValidationError
+        try:
+            field = sorted(payload['errors'].keys())[0]
+            error_message = payload['errors'][field][0]
+        except (IndexError, KeyError):
+            raise ServerError(response)
 
-    elif response.status_code == 401:
+        raise ValidationError(response, field, error_message)
+
+    elif response.status_code in [401, 403]:
         logger.error(f'{log} → {response.status_code} {response.reason}')
 
-        raise AuthenticationError
+        raise AuthenticationError(response)
 
     else:
         logger.error(f'{log} → {response.status_code} {response.reason}')
 
-        raise ServerError
+        raise ServerError(response)
