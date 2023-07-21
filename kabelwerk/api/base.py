@@ -11,11 +11,12 @@ from kabelwerk.exceptions import (
 logger = logging.getLogger('kabelwerk.api')
 
 
-def make_api_call(method, url_path, params, timeout=5):
+def make_api_call(method, url_path, params=None, timeout=2):
     """
     Send a request to the Kabelwerk API.
 
-    Return the response payload if the request is accepted.
+    Return the response payload if the request is accepted. Return None if the
+    response is accepted but does not have payload.
 
     Raise a ValidationError if the request is rejected because of invalid
     input.
@@ -32,10 +33,14 @@ def make_api_call(method, url_path, params, timeout=5):
     In all cases, write a log entry.
     """
     url = get_api_url() + url_path
-    log = f'{method} {url} {params}'
+
+    log = f'{method} {url}'
+    if params:
+        log = f'{log} {params!r}'
 
     try:
-        response = requests.post(
+        response = requests.request(
+            method,
             url,
             headers={
                 'Accept': 'application/json',
@@ -59,6 +64,11 @@ def make_api_call(method, url_path, params, timeout=5):
         ))
 
         return payload
+
+    elif response.status_code == 204:
+        logger.info(f'{log} → {response.status_code} {response.reason}')
+
+        return
 
     elif response.status_code == 400:
         payload = response.json()

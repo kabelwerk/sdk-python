@@ -17,7 +17,27 @@ def test_make_api_call_200(mock_api, mock_response, logs):
     The make_api_call function should return the decoded response payload if
     the endpoint accepts the request.
     """
-    mock_response('POST', '/test', 200, {'code': 2107})
+    mock_response('GET', '/test', 200, {'code': 2107})
+
+    assert make_api_call('GET', '/test') == {'code': 2107}
+
+    assert len(mock_api.calls) == 1
+    assert mock_api.calls[0].request.body is None
+
+    assert len(logs.records) == 1
+    assert logs.records[0].levelno == logging.INFO
+    assert logs.records[0].message == (
+        "GET https://hubdemo.kabelwerk.io/api/test "
+        "→ 200 OK {'code': 2107}"
+    )
+
+
+def test_make_api_call_201(mock_api, mock_response, logs):
+    """
+    The make_api_call function should return the decoded response payload if
+    the endpoint accepts the request.
+    """
+    mock_response('POST', '/test', 201, {'code': 2107})
 
     assert make_api_call('POST', '/test', TEST_PARAMS) == {'code': 2107}
 
@@ -28,7 +48,27 @@ def test_make_api_call_200(mock_api, mock_response, logs):
     assert logs.records[0].levelno == logging.INFO
     assert logs.records[0].message == (
         "POST https://hubdemo.kabelwerk.io/api/test {'ghost': True} "
-        "→ 200 OK {'code': 2107}"
+        "→ 201 Created {'code': 2107}"
+    )
+
+
+def test_make_api_call_204(mock_api, mock_response, logs):
+    """
+    The make_api_call function should return None if the endpoint accepts the
+    request but there is no response payload.
+    """
+    mock_response('POST', '/test', 204)
+
+    assert make_api_call('POST', '/test', TEST_PARAMS) is None
+
+    assert len(mock_api.calls) == 1
+    assert json_params_matcher(TEST_PARAMS)(mock_api.calls[0].request)
+
+    assert len(logs.records) == 1
+    assert logs.records[0].levelno == logging.INFO
+    assert logs.records[0].message == (
+        "POST https://hubdemo.kabelwerk.io/api/test {'ghost': True} "
+        "→ 204 No Content"
     )
 
 

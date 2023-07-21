@@ -41,3 +41,25 @@ def create_user(*, key, name, hub=None):
         key=data['key'],
         name=data['name'],
     )
+
+
+def delete_user(*, key):
+    """
+    Delete the user with the given key.
+
+    Raise an AuthenticationError if the request is rejected because the
+    authentication token is invalid.
+
+    Raise a ConnectionError if there is a problem connecting to the Kabelwerk
+    backend or if the request times out.
+
+    Raise a ServerError if the Kabelwerk backend fails to handle the request or
+    behaves in an unexpected way.
+
+    All arguments are named arguments.
+
+    >>> delete_user(key='kusanagi')
+    None
+
+    """
+    make_api_call('DELETE', f'/users/{key}')
