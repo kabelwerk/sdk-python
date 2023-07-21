@@ -28,6 +28,7 @@ class ValidationError(KabelwerkException):
 
 class ServerError(KabelwerkException):
     """
-    Raised when the Kabelwerk backend fails to properly handle the request.
+    Raised when the Kabelwerk backend fails to handle the request or behaves in
+    an unexpected way.
     """
     pass

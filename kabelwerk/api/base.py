@@ -1,0 +1,87 @@
+import logging
+
+import requests
+
+from kabelwerk.config import get_api_token, get_api_url
+from kabelwerk.exceptions import (
+    AuthenticationError, ConnectionError, ServerError,
+    ValidationError,
+)
+
+
+logger = logging.getLogger('kabelwerk.api')
+
+
+def make_api_call(method, url_path, params):
+    """
+    Send a request to the Kabelwerk API.
+
+    Return the response payload if the request is accepted.
+
+    Raise a ValidationError if the request is rejected because of invalid
+    input.
+
+    Raise an AuthenticationError if the request is rejected because the
+    authentication token is invalid.
+
+    Raise a ConnectionError if there is a problem connecting to the Kabelwerk
+    backend or if the request times out.
+
+    Raise a ServerError if the Kabelwerk backend fails to handle the request or
+    behaves in an unexpected way.
+
+    In all cases, write a log entry.
+    """
+    url = get_api_url() + url_path
+    log = f'{method} {url} {params}'
+
+    try:
+        response = requests.post(
+            url,
+            headers={
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Kabelwerk-Token': get_api_token(),
+            },
+            json=params,
+            timeout=5,
+        )
+
+    except requests.RequestException as error:
+        logger.error((
+            f'{log} → {error}'
+        ))
+
+        raise ConnectionError from error
+
+    if response.status_code in [200, 201]:
+        payload = response.json()
+
+        logger.info((
+            f'{log} → {response.status_code} {response.reason} {payload}'
+        ))
+
+        return payload
+
+    elif response.status_code == 400:
+        payload = response.json()
+
+        logger.warning((
+            f'{log} → {response.status_code} {response.reason} {payload}'
+        ))
+
+        raise ValidationError
+
+    elif response.status_code == 401:
+        logger.error((
+            f'{log} → {response.status_code} {response.reason}'
+        ))
+
+        raise AuthenticationError
+
+    else:
+        logger.error((
+            f'{log} → {response.status_code} {response.reason}'
+        ))
+
+        raise ServerError
