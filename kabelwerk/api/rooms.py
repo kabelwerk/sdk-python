@@ -3,9 +3,9 @@ from kabelwerk.models import Message, Room, User
 from kabelwerk.utils import parse_datetime
 
 
-def set_room_attributes(*, hub, room, attributes):
+def update_room(*, hub, room, **kwargs):
     """
-    Update the attributes of a chat room.
+    Update a chat room.
 
     Return a named tuple with info about the updated room if the backend
     accepts the request.
@@ -24,13 +24,33 @@ def set_room_attributes(*, hub, room, attributes):
 
     All arguments are named arguments.
 
-    >>> set_room_attributes(hub='section9', room='kusanagi', attributes={})
-    Room(id=42, attributes={})
+    >>> # set the room's attributes to an empty dict
+    >>> update_room(hub='section9', room='kusanagi', attributes={})
+    Room(id=42, archived=False, attributes={}, hub_user=None)
+
+    >>> # archive the room
+    >>> update_room(hub='section9', room='kusanagi', archived=True)
+    Room(id=42, archived=True, attributes={}, hub_user=None)
+
+    >>> # unarchive the room
+    >>> update_room(hub='section9', room='kusanagi', archived=False)
+    Room(id=42, archived=False, attributes={}, hub_user=None)
+
+    >>> # assign the room to a hub user
+    >>> update_room(hub='section9', room='kusanagi', hub_user='batou')
+    Room(id=42, archived=False, attributes={}, hub_user=User(key='batou'))
+
+    >>> # unassign the room
+    >>> update_room(hub='section9', room='kusanagi', hub_user=None)
+    Room(id=42, archived=False, attributes={}, hub_user=None)
 
     """
-    data = make_api_call('PATCH', f'/hubs/{hub}/rooms/{room}', {
-        'attributes': attributes,
-    })
+    params = {
+        key: value for key, value in kwargs.items()
+        if key in ['archived', 'attributes', 'hub_user']
+    }
+
+    data = make_api_call('PATCH', f'/hubs/{hub}/rooms/{room}', params)
 
     return Room(
         archived=data['archived'],

@@ -2,14 +2,14 @@ from datetime import datetime, timezone
 
 from responses.matchers import json_params_matcher
 
-from kabelwerk.api import post_message, set_room_attributes
+from kabelwerk.api import post_message, update_room
 from kabelwerk.models import Message, Room, User
 
 
-def test_set_room_attributes_works(mock_api, mock_response):
+def test_update_room_works(mock_api, mock_response):
     """
-    The set_room_attributes function should return a Room named tuple if the
-    endpoint accepts the request.
+    The update_room function should return a Room named tuple if the endpoint
+    accepts the request.
     """
     mock_response('PATCH', '/hubs/section9/rooms/kusanagi', 200, {
         'archived': True,
@@ -29,7 +29,7 @@ def test_set_room_attributes_works(mock_api, mock_response):
         },
     })
 
-    room = set_room_attributes(
+    room = update_room(
         hub='section9',
         room='kusanagi',
         attributes={'seven': 7},
