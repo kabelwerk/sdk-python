@@ -34,6 +34,9 @@ class Room(NamedTuple):
     hub_user: User | None
     """The hub user assigned to the room — if such."""
 
+    user: User
+    """The room's user."""
+
 
 class Message(NamedTuple):
     """

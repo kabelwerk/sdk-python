@@ -2,8 +2,58 @@ from datetime import datetime, timezone
 
 from responses.matchers import json_params_matcher
 
-from kabelwerk.api import post_message
-from kabelwerk.models import Message, User
+from kabelwerk.api import post_message, set_room_attributes
+from kabelwerk.models import Message, Room, User
+
+
+def test_set_room_attributes_works(mock_api, mock_response):
+    """
+    The set_room_attributes function should return a Room named tuple if the
+    endpoint accepts the request.
+    """
+    mock_response('PATCH', '/hubs/section9/rooms/kusanagi', 200, {
+        'archived': True,
+        'attributes': {
+            'seven': 7,
+        },
+        'hub_user': {
+            'id': 49448,
+            'key': 'batou',
+            'name': 'Batou',
+        },
+        'id': 22833,
+        'user': {
+            'id': 49447,
+            'key': 'kusanagi',
+            'name': 'Motoko',
+        },
+    })
+
+    room = set_room_attributes(
+        hub='section9',
+        room='kusanagi',
+        attributes={'seven': 7},
+    )
+
+    assert len(mock_api.calls) == 1
+    assert json_params_matcher({
+        'attributes': {'seven': 7},
+    })(mock_api.calls[0].request)
+
+    assert isinstance(room, Room)
+    assert room.archived is True
+    assert room.attributes == {'seven': 7}
+    assert room.id == 22833
+
+    assert isinstance(room.hub_user, User)
+    assert room.hub_user.id == 49448
+    assert room.hub_user.key == 'batou'
+    assert room.hub_user.name == 'Batou'
+
+    assert isinstance(room.user, User)
+    assert room.user.id == 49447
+    assert room.user.key == 'kusanagi'
+    assert room.user.name == 'Motoko'
 
 
 def test_post_message_works(mock_api, mock_response):
