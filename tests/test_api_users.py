@@ -1,6 +1,7 @@
 from responses.matchers import json_params_matcher
 
 from kabelwerk.api import create_user, delete_user, update_user
+from kabelwerk.models import User
 
 
 def test_create_user_works(mock_api, mock_response):
@@ -23,6 +24,7 @@ def test_create_user_works(mock_api, mock_response):
         'name': 'Motoko',
     })(mock_api.calls[0].request)
 
+    assert isinstance(user, User)
     assert user.id == 2
     assert user.key == 'kusanagi'
     assert user.name == 'Motoko'
@@ -46,6 +48,7 @@ def test_update_user_works(mock_api, mock_response):
         'name': 'Motoko',
     })(mock_api.calls[0].request)
 
+    assert isinstance(user, User)
     assert user.id == 2
     assert user.key == 'kusanagi'
     assert user.name == 'Motoko'
