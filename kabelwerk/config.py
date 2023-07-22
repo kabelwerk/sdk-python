@@ -1,15 +1,16 @@
+import os
 import re
 
 
 """
 The URL of the Kabelwerk backend to connect to.
 """
-KABELWERK_URL = 'hubdemo.kabelwerk.io'
+KABELWERK_URL = os.getenv('KABELWERK_URL', 'hubdemo.kabelwerk.io')
 
 """
 The API token to authenticate the requests to the Kabelwerk API with.
 """
-KABELWERK_API_TOKEN = ''
+KABELWERK_API_TOKEN = os.getenv('KABELWERK_API_TOKEN', '')
 
 
 # the compiled regex used to parse KABELWERK_URL
