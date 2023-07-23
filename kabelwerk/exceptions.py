@@ -8,6 +8,17 @@ class KabelwerkException(Exception):
 class ConnectionError(KabelwerkException):
     """
     Raised when there is an issue with the connection to the Kabelwerk backend.
+
+
+    Attributes
+    ----------
+
+    request
+        The failed request.
+
+    cause
+        The underlying error.
+
     """
 
     def __init__(self, error):
@@ -18,6 +29,17 @@ class ConnectionError(KabelwerkException):
 class AuthenticationError(KabelwerkException):
     """
     Raised when the authentication token is rejected by the Kabelwerk backend.
+
+
+    Attributes
+    ----------
+
+    request
+        The failed request.
+
+    response
+        The Kabelwerk backend's response.
+
     """
 
     def __init__(self, response):
@@ -28,6 +50,23 @@ class AuthenticationError(KabelwerkException):
 class ValidationError(KabelwerkException):
     """
     Raised when the input data is rejected by the Kabelwerk backend as invalid.
+
+
+    Attributes
+    ----------
+
+    request
+        The failed request.
+
+    response
+        The Kabelwerk backend's response.
+
+    field
+        The argument which failed the validation.
+
+    error_message
+        Description of the error.
+
     """
 
     def __init__(self, response, field, error_message):
@@ -42,6 +81,17 @@ class ServerError(KabelwerkException):
     """
     Raised when the Kabelwerk backend fails to handle the request or behaves in
     an unexpected way.
+
+
+    Attributes
+    ----------
+
+    request
+        The failed request.
+
+    response
+        The Kabelwerk backend's response.
+
     """
 
     def __init__(self, response):

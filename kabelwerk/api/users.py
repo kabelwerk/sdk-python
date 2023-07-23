@@ -6,22 +6,50 @@ def create_user(*, key, name, hub=None):
     """
     Create a user with the given key and name.
 
-    Return a named tuple with info about the newly created user if the backend
-    accepts the request.
-
-    Raise a ValidationError if the request is rejected because of invalid
-    input.
-
-    Raise an AuthenticationError if the request is rejected because the
-    authentication token is invalid.
-
-    Raise a ConnectionError if there is a problem connecting to the Kabelwerk
-    backend or if the request times out.
-
-    Raise a ServerError if the Kabelwerk backend fails to handle the request or
-    behaves in an unexpected way.
-
     All arguments are named arguments.
+
+
+    Arguments
+    ---------
+
+    key
+        Your unique ID for this user.
+
+    name
+        The user's name.
+
+    hub
+        The slug identifying the hub in which to create the user. Only set this
+        if you want to create a hub user.
+
+
+    Returns
+    -------
+
+    typing.NamedTuple
+        Info about the newly created user if the backend accepts the request.
+
+
+    Raises
+    ------
+
+    ValidationError
+        If the request is rejected because of invalid input.
+
+    AuthenticationError
+        If the request is rejected because the authentication token is invalid.
+
+    ConnectionError
+        If there is a problem connecting to the Kabelwerk backend or if the
+        request times out.
+
+    ServerError
+        If the Kabelwerk backend fails to handle the request or behaves in an
+        unexpected way.
+
+
+    Examples
+    --------
 
     >>> create_user(key='kusanagi', name='Motoko')
     User(id=42, key='kusanagi', name='Motoko')
@@ -47,22 +75,46 @@ def update_user(*, key, name):
     """
     Update the user with the given key.
 
-    Return a named tuple with info about the updated user if the backend
-    accepts the request.
-
-    Raise a ValidationError if the request is rejected because of invalid
-    input.
-
-    Raise an AuthenticationError if the request is rejected because the
-    authentication token is invalid.
-
-    Raise a ConnectionError if there is a problem connecting to the Kabelwerk
-    backend or if the request times out.
-
-    Raise a ServerError if the Kabelwerk backend fails to handle the request or
-    behaves in an unexpected way.
-
     All arguments are named arguments.
+
+
+    Arguments
+    ---------
+
+    key
+        Your unique ID for this user.
+
+    name
+        The user's name.
+
+
+    Returns
+    -------
+
+    typing.NamedTuple
+        Info about the updated user if the backend accepts the request.
+
+
+    Raises
+    ------
+
+    ValidationError
+        If the request is rejected because of invalid input.
+
+    AuthenticationError
+        If the request is rejected because the authentication token is invalid.
+
+    ConnectionError
+        If there is a problem connecting to the Kabelwerk backend or if the
+        request times out.
+
+    ServerError
+        If the Kabelwerk backend fails to handle the request or behaves in an
+        unexpected way.
+
+
+    Examples
+    --------
 
     >>> update_user(key='kusanagi', name='Motoko')
     User(id=42, key='kusanagi', name='Motoko')
@@ -86,16 +138,38 @@ def delete_user(*, key):
     """
     Delete the user with the given key.
 
-    Raise an AuthenticationError if the request is rejected because the
-    authentication token is invalid.
-
-    Raise a ConnectionError if there is a problem connecting to the Kabelwerk
-    backend or if the request times out.
-
-    Raise a ServerError if the Kabelwerk backend fails to handle the request or
-    behaves in an unexpected way.
-
     All arguments are named arguments.
+
+
+    Arguments
+    ---------
+
+    key
+        Your unique ID for this user.
+
+    Returns
+    -------
+
+    None
+
+
+    Raises
+    ------
+
+    AuthenticationError
+        If the request is rejected because the authentication token is invalid.
+
+    ConnectionError
+        If there is a problem connecting to the Kabelwerk backend or if the
+        request times out.
+
+    ServerError
+        If the Kabelwerk backend fails to handle the request or behaves in an
+        unexpected way.
+
+
+    Examples
+    --------
 
     >>> delete_user(key='kusanagi')
     None

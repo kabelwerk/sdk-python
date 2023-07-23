@@ -7,40 +7,84 @@ def update_room(*, hub='_', room, **kwargs):
     """
     Update a chat room.
 
-    Return a named tuple with info about the updated room if the backend
-    accepts the request.
-
-    Raise a ValidationError if the request is rejected because of invalid
-    input.
-
-    Raise an AuthenticationError if the request is rejected because the
-    authentication token is invalid.
-
-    Raise a ConnectionError if there is a problem connecting to the Kabelwerk
-    backend or if the request times out.
-
-    Raise a ServerError if the Kabelwerk backend fails to handle the request or
-    behaves in an unexpected way.
-
     All arguments are named arguments.
 
-    >>> # set the room's attributes to an empty dict
+
+    Arguments
+    ---------
+
+    hub
+        The slug identifying the hub to which the room belongs. You can omit
+        this argument if you only have one hub.
+
+    room
+        Your unique ID of the end user to which the room belongs.
+
+    archived
+        Whether to mark the room as archived. Optional.
+
+    attributes
+        The attributes to set on the room. Optional.
+
+    hub_user
+        Your unique ID of the hub user to assign the room to. Set to None if
+        you want to unassign the room. Optional.
+
+
+    Returns
+    -------
+
+    typing.NamedTuple
+        Info about the updated room if the backend accepts the request.
+
+
+    Raises
+    ------
+
+    ValidationError
+        If the request is rejected because of invalid input.
+
+    AuthenticationError
+        If the request is rejected because the authentication token is invalid.
+
+    ConnectionError
+        If there is a problem connecting to the Kabelwerk backend or if the
+        request times out.
+
+    ServerError
+        If the Kabelwerk backend fails to handle the request or behaves in an
+        unexpected way.
+
+
+    Examples
+    --------
+
+    Set the room's attributes to an empty dict:
+
     >>> update_room(hub='section9', room='kusanagi', attributes={})
     Room(id=42, archived=False, attributes={}, hub_user=None)
 
-    >>> # archive the room
+
+    Archive the room:
+
     >>> update_room(hub='section9', room='kusanagi', archived=True)
     Room(id=42, archived=True, attributes={}, hub_user=None)
 
-    >>> # unarchive the room
+
+    Unarchive the room:
+
     >>> update_room(hub='section9', room='kusanagi', archived=False)
     Room(id=42, archived=False, attributes={}, hub_user=None)
 
-    >>> # assign the room to a hub user
+
+    Assign the room to a hub user:
+
     >>> update_room(hub='section9', room='kusanagi', hub_user='batou')
     Room(id=42, archived=False, attributes={}, hub_user=User(key='batou'))
 
-    >>> # unassign the room
+
+    Unassign the room:
+
     >>> update_room(hub='section9', room='kusanagi', hub_user=None)
     Room(id=42, archived=False, attributes={}, hub_user=None)
 
@@ -78,22 +122,51 @@ def post_message(*, hub='_', room, user, text):
     """
     Post a message in a chat room.
 
-    Return a named tuple with info about the newly created message if the
-    backend accepts the request.
-
-    Raise a ValidationError if the request is rejected because of invalid
-    input.
-
-    Raise an AuthenticationError if the request is rejected because the
-    authentication token is invalid.
-
-    Raise a ConnectionError if there is a problem connecting to the Kabelwerk
-    backend or if the request times out.
-
-    Raise a ServerError if the Kabelwerk backend fails to handle the request or
-    behaves in an unexpected way.
-
     All arguments are named arguments.
+
+
+    Arguments
+    ---------
+
+    hub
+        The slug identifying the hub to which the belongs the room where to
+        post the message. You can omit this argument if you only have one hub.
+
+    room
+        Your unique ID of the end user to which belongs the room where to post
+        the message.
+
+    text
+        The text of the message.
+
+
+    Returns
+    -------
+
+    typing.NamedTuple
+        Info about the newly posted message if the backend accepts the request.
+
+
+    Raises
+    ------
+
+    ValidationError
+        If the request is rejected because of invalid input.
+
+    AuthenticationError
+        If the request is rejected because the authentication token is invalid.
+
+    ConnectionError
+        If there is a problem connecting to the Kabelwerk backend or if the
+        request times out.
+
+    ServerError
+        If the Kabelwerk backend fails to handle the request or behaves in an
+        unexpected way.
+
+
+    Examples
+    --------
 
     >>> post_message(hub='section9', room='kusanagi', user='batou', text='?')
     Message(id=42, key='kusanagi', name='Motoko')

@@ -47,8 +47,10 @@ Reference
 ---------
 
 .. toctree::
-   api
-   exceptions
+    :maxdepth: 2
+
+    api
+    exceptions
 
 
 .. _`Kabelwerk`: https://kabelwerk.io
