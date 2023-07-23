@@ -16,7 +16,9 @@ sys.path.append(os.path.abspath(os.path.join(__file__, '../..')))
 project = "Kabelwerk's SDK for Python"
 copyright = '2023, Kabelwerk'
 author = 'Kabelwerk'
-release = '0.1.0'
+
+release = '0.1.1'
+version = '0.1.1'
 
 
 # -- General configuration ---------------------------------------------------
