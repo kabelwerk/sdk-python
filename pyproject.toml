@@ -37,6 +37,7 @@ dev = [
     "pytest",
     "responses",
     "sphinx",
+    "sphinx_rtd_theme",
 ]
 
 [project.urls]

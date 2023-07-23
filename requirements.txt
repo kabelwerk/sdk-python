@@ -16,10 +16,11 @@ charset-normalizer==3.2.0
     # via requests
 click==8.1.5
     # via pip-tools
-docutils==0.20.1
+docutils==0.18.1
     # via
     #   flit
     #   sphinx
+    #   sphinx-rtd-theme
 flit==3.9.0
     # via kabelwerk (pyproject.toml)
 flit-core==3.9.0
@@ -61,7 +62,12 @@ responses==0.23.1
     # via kabelwerk (pyproject.toml)
 snowballstemmer==2.2.0
     # via sphinx
-sphinx==7.0.1
+sphinx==6.2.1
+    # via
+    #   kabelwerk (pyproject.toml)
+    #   sphinx-rtd-theme
+    #   sphinxcontrib-jquery
+sphinx-rtd-theme==1.2.2
     # via kabelwerk (pyproject.toml)
 sphinxcontrib-applehelp==1.0.4
     # via sphinx
@@ -69,6 +75,8 @@ sphinxcontrib-devhelp==1.0.2
     # via sphinx
 sphinxcontrib-htmlhelp==2.0.1
     # via sphinx
+sphinxcontrib-jquery==4.1
+    # via sphinx-rtd-theme
 sphinxcontrib-jsmath==1.0.1
     # via sphinx
 sphinxcontrib-qthelp==1.0.3
