@@ -36,6 +36,7 @@ dev = [
     "pip-tools",
     "pytest",
     "responses",
+    "sphinx",
 ]
 
 [project.urls]
