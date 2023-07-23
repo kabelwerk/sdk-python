@@ -7,6 +7,9 @@
 /dist
 /kabelwerk.egg-info
 
+# docs
+/docs/_build
+
 # compiled code
 *.pyc
 
