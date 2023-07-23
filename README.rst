@@ -18,6 +18,13 @@ Releases follow semantic versioning. Make sure to check the `CHANGELOG.rst`_
 whenever upgrading to a newer version.
 
 
+Documentation
+=============
+
+Documentation — including API reference and code examples — can be found at
+`docs.kabelwerk.io`_.
+
+
 Licence
 =======
 
@@ -32,5 +39,7 @@ Licensed under the `MIT`_ licence.
 
 .. _`Cheese Shop`: https://pypi.org/project/kabelwerk/
 .. _`CHANGELOG.rst`: https://github.com/kabelwerk/sdk-python/blob/master/CHANGELOG.rst
+
+.. _`docs.kabelwerk.io`: https://docs.kabelwerk.io/python/
 
 .. _`MIT`: https://github.com/kabelwerk/sdk-python/blob/master/LICENSE
