@@ -3,7 +3,7 @@ from kabelwerk.models import Message, Room, User
 from kabelwerk.utils import parse_datetime
 
 
-def update_room(*, hub, room, **kwargs):
+def update_room(*, hub='_', room, **kwargs):
     """
     Update a chat room.
 
@@ -74,7 +74,7 @@ messages
 """
 
 
-def post_message(*, hub, room, user, text):
+def post_message(*, hub='_', room, user, text):
     """
     Post a message in a chat room.
 
