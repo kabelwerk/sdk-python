@@ -25,6 +25,13 @@ Documentation — including API reference and code examples — can be found at
 `docs.kabelwerk.io`_.
 
 
+Contributing
+============
+
+Please refer to `CONTRIBUTING.rst`_ if you have found a bug or if you want to
+setup the project locally.
+
+
 Licence
 =======
 
@@ -41,5 +48,7 @@ Licensed under the `MIT`_ licence.
 .. _`CHANGELOG.rst`: https://github.com/kabelwerk/sdk-python/blob/master/CHANGELOG.rst
 
 .. _`docs.kabelwerk.io`: https://docs.kabelwerk.io/python/
+
+.. _`CONTRIBUTING.rst`: https://github.com/kabelwerk/sdk-python/blob/master/CONTRIBUTING.rst
 
 .. _`MIT`: https://github.com/kabelwerk/sdk-python/blob/master/LICENSE
