@@ -47,6 +47,27 @@ class AuthenticationError(KabelwerkException):
         self.response = response
 
 
+class DoesNotExist(KabelwerkException):
+    """
+    Raised when the requested entity does not exist.
+
+
+    Attributes
+    ----------
+
+    request
+        The failed request.
+
+    response
+        The Kabelwerk backend's response.
+
+    """
+
+    def __init__(self, response):
+        self.request = response.request
+        self.response = response
+
+
 class ValidationError(KabelwerkException):
     """
     Raised when the input data is rejected by the Kabelwerk backend as invalid.

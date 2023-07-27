@@ -4,7 +4,8 @@ import requests
 
 from kabelwerk.config import get_api_token, get_api_url
 from kabelwerk.exceptions import (
-    AuthenticationError, ConnectionError, ServerError, ValidationError,
+    AuthenticationError, ConnectionError, DoesNotExist, ServerError,
+    ValidationError,
 )
 
 
@@ -17,6 +18,9 @@ def make_api_call(method, url_path, params=None, timeout=2):
 
     Return the response payload if the request is accepted. Return None if the
     response is accepted but does not have payload.
+
+    Raise a DoesNotExist error if the request is rejected because the requested
+    entity does not exist.
 
     Raise a ValidationError if the request is rejected because of invalid
     input.
@@ -89,6 +93,11 @@ def make_api_call(method, url_path, params=None, timeout=2):
         logger.error(f'{log} → {response.status_code} {response.reason}')
 
         raise AuthenticationError(response)
+
+    elif response.status_code == 404:
+        logger.warning(f'{log} → {response.status_code} {response.reason}')
+
+        raise DoesNotExist(response)
 
     else:
         logger.error(f'{log} → {response.status_code} {response.reason}')

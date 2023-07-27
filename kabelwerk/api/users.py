@@ -98,6 +98,9 @@ def update_user(*, key, name):
     Raises
     ------
 
+    DoesNotExist
+        If there is no user on the Kabelwerk backend with the given key.
+
     ValidationError
         If the request is rejected because of invalid input.
 
@@ -147,6 +150,7 @@ def delete_user(*, key):
     key
         Your unique ID for this user.
 
+
     Returns
     -------
 
@@ -155,6 +159,9 @@ def delete_user(*, key):
 
     Raises
     ------
+
+    DoesNotExist
+        If there is no user on the Kabelwerk backend with the given key.
 
     AuthenticationError
         If the request is rejected because the authentication token is invalid.
@@ -173,6 +180,9 @@ def delete_user(*, key):
 
     >>> delete_user(key='kusanagi')
     None
+
+    >>> delete_user(key='kusanagi')
+    DoesNotExist
 
     """
     make_api_call('DELETE', f'/users/{key}')

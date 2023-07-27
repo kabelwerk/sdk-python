@@ -6,7 +6,8 @@ from responses.matchers import json_params_matcher
 
 from kabelwerk.api.base import make_api_call
 from kabelwerk.exceptions import (
-    AuthenticationError, ConnectionError, ServerError, ValidationError,
+    AuthenticationError, ConnectionError, DoesNotExist, ServerError,
+    ValidationError,
 )
 
 
@@ -106,7 +107,7 @@ def test_make_api_call_401(mock_api, mock_response, logs):
     The make_api_call function should raise if the endpoint rejects the request
     because the Kabelwerk-Token is not valid.
     """
-    mock_response('POST', '/test', 401, {})
+    mock_response('POST', '/test', 401)
 
     with pytest.raises(AuthenticationError) as exc_info:
         make_api_call('POST', '/test', TEST_PARAMS)
@@ -127,12 +128,37 @@ def test_make_api_call_401(mock_api, mock_response, logs):
     )
 
 
+def test_make_api_call_404(mock_api, mock_response, logs):
+    """
+    The make_api_call function should raise if the backend rejects the request
+    because the requested entity does not exist.
+    """
+    mock_response('HEAD', '/test', 404)
+
+    with pytest.raises(DoesNotExist) as exc_info:
+        make_api_call('HEAD', '/test')
+
+    error = exc_info.value
+    assert isinstance(error.request, requests.PreparedRequest)
+    assert isinstance(error.response, requests.Response)
+    assert error.response.status_code == 404
+
+    assert len(mock_api.calls) == 1
+    assert mock_api.calls[0].request.body is None
+
+    assert len(logs.records) == 1
+    assert logs.records[0].levelno == logging.WARNING
+    assert logs.records[0].message == (
+        "HEAD https://hubdemo.kabelwerk.io/api/test → 404 Not Found"
+    )
+
+
 def test_make_api_call_500(mock_api, mock_response, logs):
     """
     The make_api_call function should raise if the backend fails to process the
     request because of a server error.
     """
-    mock_response('POST', '/test', 500, {})
+    mock_response('POST', '/test', 500)
 
     with pytest.raises(ServerError) as exc_info:
         make_api_call('POST', '/test', TEST_PARAMS)

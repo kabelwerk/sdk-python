@@ -41,6 +41,9 @@ def update_room(*, hub='_', room, **kwargs):
     Raises
     ------
 
+    DoesNotExist
+        If there is no chat room for the given end user and hub.
+
     ValidationError
         If the request is rejected because of invalid input.
 
@@ -149,6 +152,9 @@ def post_message(*, hub='_', room, user, text):
 
     Raises
     ------
+
+    DoesNotExist
+        If there is no chat room for the given end user and hub.
 
     ValidationError
         If the request is rejected because of invalid input.
