@@ -4,7 +4,7 @@ import pytest
 import responses
 from responses.matchers import header_matcher
 
-from kabelwerk import config
+from kabelwerk import __version__, config
 
 
 @pytest.fixture
@@ -37,6 +37,7 @@ def mock_response(api_url, api_token, mock_api):
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                     'Kabelwerk-Token': api_token,
+                    'User-Agent': f'sdk-python/{__version__}',
                 }),
             ],
             status=status,

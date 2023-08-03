@@ -2,6 +2,7 @@ import logging
 
 import requests
 
+from kabelwerk import __version__
 from kabelwerk.config import get_api_token, get_api_url
 from kabelwerk.exceptions import (
     AuthenticationError, ConnectionError, DoesNotExist, ServerError,
@@ -16,25 +17,56 @@ def make_api_call(method, url_path, params=None, timeout=2):
     """
     Send a request to the Kabelwerk API.
 
-    Return the response payload if the request is accepted. Return None if the
-    response is accepted but does not have payload.
-
-    Raise a DoesNotExist error if the request is rejected because the requested
-    entity does not exist.
-
-    Raise a ValidationError if the request is rejected because of invalid
-    input.
-
-    Raise an AuthenticationError if the request is rejected because the
-    authentication token is invalid.
-
-    Raise a ConnectionError if there is a problem connecting to the Kabelwerk
-    backend or if the request times out.
-
-    Raise a ServerError if the Kabelwerk backend fails to handle the request or
-    behaves in an unexpected way.
-
     In all cases, write a log entry.
+
+
+    Arguments
+    ---------
+
+    method
+        The HTTP method.
+
+    url_path
+        The URL path of the endpoint.
+
+    params
+        The payload — if such — to encode and send with the request.
+
+    timeout
+        The number of seconds to wait for a response before giving up and
+        raising a ConnectionError.
+
+
+    Returns
+    -------
+
+    dict
+        The decoded response payload if the request is accepted.
+
+    None
+        If the response is accepted but does not have payload.
+
+
+    Raises
+    ------
+
+    DoesNotExist
+        If the request is rejected because the requested entity does not exist.
+
+    ValidationError
+        If the request is rejected because of invalid input.
+
+    AuthenticationError
+        If the request is rejected because the authentication token is invalid.
+
+    ConnectionError
+        If there is a problem connecting to the Kabelwerk backend or if the
+        request times out.
+
+    ServerError
+        If the Kabelwerk backend fails to handle the request or behaves in an
+        unexpected way.
+
     """
     url = get_api_url() + url_path
 
@@ -50,6 +82,7 @@ def make_api_call(method, url_path, params=None, timeout=2):
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'Kabelwerk-Token': get_api_token(),
+                'User-Agent': f'sdk-python/{__version__}',
             },
             json=params,
             timeout=timeout,
