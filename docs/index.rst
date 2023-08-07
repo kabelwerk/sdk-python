@@ -42,6 +42,9 @@ You can set this in the SDK's config at runtime:
 Alternatively, you can set the environment variables ``KABELWERK_URL`` and
 ``KABELWERK_API_TOKEN`` — these will be read when you first import the SDK.
 
+If you have a Django project, you can also configure the SDK in your settings.
+Check the `Django integration`_ page for more details.
+
 
 Reference
 ---------
@@ -51,8 +54,10 @@ Reference
 
     api
     exceptions
+    django
 
 
 .. _`Kabelwerk`: https://kabelwerk.io
 .. _`Cheese Shop`: https://pypi.org/project/kabelwerk/
 .. _`CHANGELOG.rst`: https://github.com/kabelwerk/sdk-python/blob/master/CHANGELOG.rst
+.. _`Django integration`: django.html
